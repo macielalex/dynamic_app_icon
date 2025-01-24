@@ -25,6 +25,14 @@ class PremiumIconPlugin(private val context: Context) {
                     updateToDefaultIcon()
                     result.success(true)
                 }
+                "updateToLemonIcon" -> {
+                    updateToLemonIcon()
+                    result.success(true)
+                }
+                "updateToOrangeIcon" -> {
+                    updateToOrangeIcon()
+                    result.success(true)
+                }
                 else -> result.notImplemented()
             }
         }
@@ -38,63 +46,59 @@ class PremiumIconPlugin(private val context: Context) {
         changeIcon("MainActivity", "PremiumActivity")
     }
 
+    private fun updateToLemonIcon() {
+        changeIcon("LemonActivity", "MainActivity")
+    }
+
+    private fun updateToOrangeIcon() {
+        changeIcon("OrangeActivity", "MainActivity")
+    }
+
     private fun changeIcon(newActivity: String, oldActivity: String) {
         val packageManager = context.packageManager
+        val activities = listOf("PremiumActivity", "LemonActivity", "OrangeActivity", "MainActivity")
+
+        // Habilitar o novo alias específico primeiro
         val newComponentName = ComponentName(context, "$packageName.$newActivity")
-        val oldComponentName = ComponentName(context, "$packageName.$oldActivity")
-
-        android.util.Log.d("PremiumIconPlugin", "Disabling old alias: $oldActivity")
-        android.util.Log.d("PremiumIconPlugin", "Enabling new alias: $newActivity")
-
-        // Enable the new activity alias
         packageManager.setComponentEnabledSetting(
                 newComponentName,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP
         )
+        val iconUpdatedIntent = Intent("com.example.app_icon_dynamic.ICON_UPDATED")
+        context.sendBroadcast(iconUpdatedIntent)
 
-        // Disable the old activity alias
-        packageManager.setComponentEnabledSetting(
-                oldComponentName,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-        )
+        // Desabilitar todos os aliases antigos em seguida
+        activities.forEach { activity ->
+            if (activity != newActivity) { // Evitar desabilitar o novo alias
+                val componentName = ComponentName(context, "$packageName.$activity")
+                packageManager.setComponentEnabledSetting(
+                        componentName,
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        PackageManager.DONT_KILL_APP
+                )
+            }
+        }
 
+        // Garantir que a reinicialização ocorra após a troca, com tempo suficiente
         Handler(context.mainLooper).postDelayed({
             restartApp()
-        }, 2000)
-
+        }, 10000) // Aumentar o tempo de atraso
     }
-//    private fun restartApp() {
-//        try {
-//            // Crie um Intent explícito para MainActivity
-//            val intent = Intent(context, MainActivity::class.java).apply {
-//                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//            }
-//
-//            // Inicie a atividade principal
-//            context.startActivity(intent)
-//
-//            // Finalize o processo atual para garantir que ele seja reiniciado
-//            Runtime.getRuntime().exit(0)
-//        } catch (e: Exception) {
-//            android.util.Log.e("PremiumIconPlugin", "Error restarting app: ${e.message}")
-//        }
-//    }
 
     private fun restartApp() {
         try {
-            val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            val intent = Intent(context, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK) // Removido FLAG_ACTIVITY_CLEAR_TASK
             }
             context.startActivity(intent)
-
-            // Finaliza o processo atual sem usar Runtime.exit
-            android.os.Process.killProcess(android.os.Process.myPid())
         } catch (e: Exception) {
-            android.util.Log.e("PremiumIconPlugin", "Error restarting app: ${e.message}")
+            android.util.Log.e("PremiumIconPlugin", "Erro ao reiniciar o app: ${e.message}")
         }
     }
+
+
+
 
 
 

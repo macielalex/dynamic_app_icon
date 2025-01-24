@@ -22,4 +22,24 @@ class  PremiumIconChanger  {
       print ( "Falha ao alterar o ícone: ${e.message} " );
     }
   }
+
+  static Future< void > updateToLemonIcon() async {
+    try {
+      await _channel.invokeMethod( 'updateToLemonIcon' );
+    } on PlatformException catch (e) { //adicione se necessário
+      print ( "Falha ao alterar o ícone: ${e.message} " );
+    } on MissingPluginException catch (e) { //adicione se necessário
+      print ( "Falha ao alterar o ícone: ${e.message} " );
+    }
+  }
+
+  static Future< void > updateToOrangeIcon() async {
+    try {
+      await _channel.invokeMethod( 'updateToOrangeIcon' );
+    } on PlatformException catch (e) { //adicione se necessário
+      print ( "Falha ao alterar o ícone: ${e.message} " );
+    } on MissingPluginException catch (e) { //adicione se necessário
+      print ( "Falha ao alterar o ícone: ${e.message} " );
+    }
+  }
 }

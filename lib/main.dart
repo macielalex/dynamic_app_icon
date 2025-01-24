@@ -115,6 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
               context: context,
                builder: (context) {
                  return AlertDialog(
+                   contentPadding: EdgeInsets.all(8.0), // Ajusta o padding interno
+                   actionsPadding: EdgeInsets.symmetric(horizontal: 16.0),
                    title: Text('Atenção'),
                    actions: [
 
@@ -122,7 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                          const Text('O aplicativo será encerrado para aplicar as configurações do tema',textAlign: TextAlign.center,
                          ),
-                          Row(
+                          Wrap(
+
+
                             children: [
                               TextButton(onPressed: ()async{
                                 await PremiumIconChanger.updateToPremiumIcon();
@@ -133,6 +137,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                 await PremiumIconChanger.updateToDefaultIcon();
                                 Navigator.pop(context);
                               }, child: Text('Default')),
+
+                              TextButton(onPressed: ()async{
+                                await PremiumIconChanger.updateToLemonIcon();
+                                Navigator.pop(context);
+                              }, child: Text('Lemon')),
+
+                              TextButton(onPressed: ()async{
+                                await PremiumIconChanger.updateToOrangeIcon();
+                                Navigator.pop(context);
+                              }, child: Text('Orange')),
+
 
                               TextButton(onPressed: ()async{
                                 Navigator.pop(context);
