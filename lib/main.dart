@@ -1,5 +1,6 @@
 import 'package:app_icon_dynamic/premium_icon_changer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -130,22 +131,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: [
                               TextButton(onPressed: ()async{
                                 await PremiumIconChanger.updateToPremiumIcon();
-                                Navigator.pop(context);
+                                SystemNavigator.pop();
                               }, child: Text('Premium')),
 
                               TextButton(onPressed: ()async{
                                 await PremiumIconChanger.updateToDefaultIcon();
-                                Navigator.pop(context);
+                                SystemNavigator.pop();
                               }, child: Text('Default')),
 
                               TextButton(onPressed: ()async{
                                 await PremiumIconChanger.updateToLemonIcon();
-                                Navigator.pop(context);
+                                SystemNavigator.pop();
                               }, child: Text('Lemon')),
 
                               TextButton(onPressed: ()async{
                                 await PremiumIconChanger.updateToOrangeIcon();
-                                Navigator.pop(context);
+                                SystemNavigator.pop();
                               }, child: Text('Orange')),
 
 

@@ -56,34 +56,41 @@ class PremiumIconPlugin(private val context: Context) {
 
     private fun changeIcon(newActivity: String, oldActivity: String) {
         val packageManager = context.packageManager
-        val activities = listOf("PremiumActivity", "LemonActivity", "OrangeActivity", "MainActivity")
-
-        // Habilitar o novo alias específico primeiro
         val newComponentName = ComponentName(context, "$packageName.$newActivity")
-        packageManager.setComponentEnabledSetting(
-                newComponentName,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP
-        )
-        val iconUpdatedIntent = Intent("com.example.app_icon_dynamic.ICON_UPDATED")
-        context.sendBroadcast(iconUpdatedIntent)
 
-        // Desabilitar todos os aliases antigos em seguida
-        activities.forEach { activity ->
-            if (activity != newActivity) { // Evitar desabilitar o novo alias
-                val componentName = ComponentName(context, "$packageName.$activity")
-                packageManager.setComponentEnabledSetting(
-                        componentName,
-                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                        PackageManager.DONT_KILL_APP
-                )
+        try {
+            // Ativar o novo alias
+            packageManager.setComponentEnabledSetting(
+                    newComponentName,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP
+            )
+            android.util.Log.d("PremiumIconPlugin", "Novo alias habilitado: $newActivity")
+
+            // Desativar outros aliases
+            val aliases = listOf("PremiumActivity", "LemonActivity", "OrangeActivity", "MainActivity")
+            aliases.forEach { alias ->
+                if (alias != newActivity) {
+                    val componentName = ComponentName(context, "$packageName.$alias")
+                    packageManager.setComponentEnabledSetting(
+                            componentName,
+                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP
+                    )
+                    android.util.Log.d("PremiumIconPlugin", "Alias desabilitado: $alias")
+                }
             }
-        }
 
-        // Garantir que a reinicialização ocorra após a troca, com tempo suficiente
-        Handler(context.mainLooper).postDelayed({
-            restartApp()
-        }, 10000) // Aumentar o tempo de atraso
+            // Notificar o launcher sobre a mudança
+            val intent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.sendBroadcast(intent)
+            android.util.Log.d("PremiumIconPlugin", "Notificação enviada ao launcher.")
+        } catch (e: Exception) {
+            android.util.Log.e("PremiumIconPlugin", "Erro ao alterar o ícone: ${e.message}")
+        }
     }
 
     private fun restartApp() {
