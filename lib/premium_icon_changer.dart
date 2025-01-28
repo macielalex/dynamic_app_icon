@@ -33,13 +33,20 @@ class  PremiumIconChanger  {
     }
   }
 
-  static Future< void > updateToOrangeIcon() async {
+  static Future<void> updateToOrangeIcon() async {
     try {
-      await _channel.invokeMethod( 'updateToOrangeIcon' );
-    } on PlatformException catch (e) { //adicione se necessário
-      print ( "Falha ao alterar o ícone: ${e.message} " );
-    } on MissingPluginException catch (e) { //adicione se necessário
-      print ( "Falha ao alterar o ícone: ${e.message} " );
+      await _channel.invokeMethod('saveSelectedIcon', {'iconName': 'OrangeActivity'});
+    } catch (e) {
+      print("Erro ao salvar o ícone: $e");
     }
   }
+
+  static Future<void> applyIcon() async {
+    try {
+      await _channel.invokeMethod('applySavedIcon'); // Chama o método nativo para aplicar o ícone salvo
+    } catch (e) {
+      print("Erro ao aplicar o ícone salvo: $e");
+    }
+  }
+
 }

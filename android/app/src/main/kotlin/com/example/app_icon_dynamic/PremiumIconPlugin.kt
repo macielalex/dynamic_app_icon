@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Handler
+import android.util.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 
@@ -31,6 +32,19 @@ class PremiumIconPlugin(private val context: Context) {
                 }
                 "updateToOrangeIcon" -> {
                     updateToOrangeIcon()
+                    result.success(true)
+                }
+                "saveSelectedIcon" -> {
+                    val iconName = call.argument<String>("iconName")
+                    if (iconName != null) {
+                        saveSelectedIcon(iconName)
+                        result.success(true)
+                    } else {
+                        result.error("INVALID_ARGUMENT", "Ícone inválido", null)
+                    }
+                }
+                "applySavedIcon" -> { // Novo caso para aplicar o ícone salvo
+                    applySavedIcon()
                     result.success(true)
                 }
                 else -> result.notImplemented()
@@ -81,17 +95,37 @@ class PremiumIconPlugin(private val context: Context) {
                 }
             }
 
-            // Notificar o launcher sobre a mudança
             val intent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_HOME)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.sendBroadcast(intent)
-            android.util.Log.d("PremiumIconPlugin", "Notificação enviada ao launcher.")
+            Log.d("AppLifecycleObserver", "Notificação enviada ao launcher para atualização do ícone.")
+
         } catch (e: Exception) {
             android.util.Log.e("PremiumIconPlugin", "Erro ao alterar o ícone: ${e.message}")
         }
     }
+
+    private fun saveSelectedIcon(iconName: String) {
+        val sharedPreferences = context.getSharedPreferences("IconPrefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString("selected_icon", iconName).apply()
+        android.util.Log.d("PremiumIconPlugin", "Ícone salvo: $iconName")
+    }
+
+    private fun applySavedIcon() {
+        val sharedPreferences = context.getSharedPreferences("IconPrefs", Context.MODE_PRIVATE)
+        val selectedIcon = sharedPreferences.getString("selected_icon", "MainActivity")
+        if (selectedIcon != null) {
+            changeIcon(selectedIcon, "MainActivity")
+            android.util.Log.d("PremiumIconPlugin", "Ícone aplicado: $selectedIcon")
+        } else {
+            android.util.Log.e("PremiumIconPlugin", "Nenhum ícone selecionado encontrado para aplicar.")
+        }
+    }
+
+
+
 
     private fun restartApp() {
         try {
