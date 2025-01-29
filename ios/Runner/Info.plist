@@ -45,5 +45,45 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleIcons</key>
+<dict>
+    <key>CFBundlePrimaryIcon</key>
+    <dict>
+        <key>CFBundleIconFiles</key>
+        <array>
+            <string>AppIcon</string>
+        </array>
+    </dict>
+    <key>CFBundleAlternateIcons</key>
+    <dict>
+        <key>IconePremium</key>
+        <dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string>IconePremium</string>
+            </array>
+            <key>UIPrerenderedIcon</key>
+            <false/>
+        </dict>
+        <key>IconeLemon</key>
+        <dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string>IconeLemon</string>
+            </array>
+            <key>UIPrerenderedIcon</key>
+            <false/>
+        </dict>
+        <key>IconeOrange</key>
+        <dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string>IconeOrange</string>
+            </array>
+            <key>UIPrerenderedIcon</key>
+            <false/>
+        </dict>
+    </dict>
+</dict>
 </dict>
 </plist>
