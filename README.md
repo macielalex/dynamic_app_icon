@@ -20,7 +20,7 @@ This project implements **dynamic icon and splash screen change** in Flutter, al
 
 | Vídeo / Video|
 |---|
-| ![Como funciona / How it works](assets/animacao.mp4) |
+| ![Como funciona / How it works](assets/animacao.gif) |
 
 ## 🛠 **Configuração e Instalação / Setup and Installation**
 
