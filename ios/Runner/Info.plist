@@ -14,47 +14,24 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-<<<<<<< HEAD
-			<key>IconeLemon</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>IconeLemon</string>
-=======
 			<key>appicon</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>appicon</string>
->>>>>>> poc/change_icon_both_platforms
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
-<<<<<<< HEAD
-			<key>IconeOrange</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>IconeOrange</string>
-=======
 			<key>iconelemon</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>iconelemon</string>
->>>>>>> poc/change_icon_both_platforms
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
-<<<<<<< HEAD
-			<key>IconePremium</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>IconePremium</string>
-=======
 			<key>iconeorange</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -69,7 +46,6 @@
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>iconepremium</string>
->>>>>>> poc/change_icon_both_platforms
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
@@ -79,10 +55,6 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-<<<<<<< HEAD
-				<string>AppIcon</string>
-			</array>
-=======
 				<string></string>
 			</array>
 			<key>CFBundleIconName</key>
@@ -100,7 +72,6 @@
 			<string>UINewsstandBindingEdgeLeft</string>
 			<key>UINewsstandBindingType</key>
 			<string>UINewsstandBindingTypeMagazine</string>
->>>>>>> poc/change_icon_both_platforms
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
