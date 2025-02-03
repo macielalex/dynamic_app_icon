@@ -6,7 +6,7 @@ This project implements **dynamic icon and splash screen change** in Flutter, al
 
 ## ✨ **Funcionalidades / Features**
 - ✅ **Troca de ícone / Icon Change**: O usuário pode escolher um ícone personalizado. / The user can select a custom icon.
-- ✅ **Troca de legenda (label do app) / App Label Change** junto com o ícone. / along with the icon.
+- ✅ **Troca de legenda (label do app apenas Android) / App Label Change** junto com o ícone. / along with the icon.
 - ✅ **Persistência da seleção / Selection Persistence**: O ícone escolhido é salvo e aplicado na próxima abertura do app. / The selected icon is saved and applied on the next app launch.
 - ✅ **Compatibilidade Android & iOS / Android & iOS Compatibility**: Implementação para ambos os sistemas. / Implementation for both systems.
 - ✅ **Mudança de Splash Screen / Splash Screen Change** no iOS e Android baseada no ícone escolhido. / on iOS and Android based on the selected icon.
