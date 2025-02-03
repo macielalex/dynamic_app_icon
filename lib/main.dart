@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -32,6 +37,24 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+
+Future<void> _saveIconIos(String iconName) async {
+ try {
+
+  final bool supportsAlternateIcons =  await FlutterDynamicIconPlus.supportsAlternateIcons; 
+    if (supportsAlternateIcons) {
+      await FlutterDynamicIconPlus.setAlternateIconName(iconName: iconName);
+      print("Ícone do app alterado com sucesso!");
+    } else {
+      print("Ícones alternativos não são suportados neste dispositivo.");
+    }
+  } on PlatformException catch (e) {
+    print("Erro ao trocar o ícone: $e");
+  }
+
+}
+
+
   // Método para aplicar o ícone salvo antes de sair
   Future<void> _applyIconAndExit() async {
     try {
@@ -58,29 +81,56 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               ListTile(
                 title: Text("Premium"),
-                onTap: () {
-                  _saveIconPreference("PremiumActivity");
+                onTap: () async {
+                  if(Platform.isAndroid){
+
+                await  _saveIconPreference("PremiumActivity");
+                  }else{
+                     _saveIconIos("iconepremium");
+                  }
                   Navigator.pop(context); // Apenas fecha o diálogo
                 },
               ),
               ListTile(
                 title: Text("Lemon"),
-                onTap: () {
-                  _saveIconPreference("LemonActivity");
+                onTap: ()async {
+                 
+                    if(Platform.isAndroid){
+
+                   _saveIconPreference("LemonActivity");
+                  }else{
+                    _saveIconIos("iconelemon");
+                  }
                   Navigator.pop(context); // Apenas fecha o diálogo
                 },
               ),
               ListTile(
                 title: Text("Orange"),
-                onTap: () {
-                  _saveIconPreference("OrangeActivity");
+                onTap: () async{
+                    if(Platform.isAndroid){
+
+                 _saveIconPreference("OrangeActivity");
+                  }else{
+                    _saveIconIos("iconeorange");
+                  }
+                 
                   Navigator.pop(context); // Apenas fecha o diálogo
                 },
               ),
               ListTile(
                 title: Text("Padrão"),
-                onTap: () {
-                  _saveIconPreference("MainActivity");
+                onTap: () async{
+                 
+
+                      if(Platform.isAndroid){
+
+                 _saveIconPreference("MainActivity");
+                  }else{
+                    _saveIconIos("appicon");
+                  }
+
+                  
+                  
                   Navigator.pop(context); // Apenas fecha o diálogo
                 },
               ),
