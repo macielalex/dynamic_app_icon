@@ -1,50 +1,75 @@
-# 📱 Personalização de Ícones e Splash Screen no Flutter / Icon and Splash Screen Customization in Flutter
+# 📱 Ícone Dinâmico no Flutter / Dynamic App Icon in Flutter
 
-Este projeto implementa a **mudança dinâmica de ícones e splash screen** no Flutter, permitindo ao usuário selecionar um novo ícone para o app e refletir essa escolha ao reiniciá-lo.
+![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-3.5-0175C2?logo=dart&logoColor=white)
+![Android](https://img.shields.io/badge/Android-✓-3DDC84?logo=android&logoColor=white)
+![iOS](https://img.shields.io/badge/iOS-✓-000000?logo=apple&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-This project implements **dynamic icon and splash screen change** in Flutter, allowing the user to select a new app icon and reflect that choice upon restarting the app.
+Este projeto implementa a **mudança dinâmica de ícone e splash screen** no Flutter, sem necessidade de novo build ou release. O usuário escolhe um ícone dentro do app; a escolha é persistida e aplicada na próxima abertura. Projetado para funcionar em apps com **múltiplos flavors** (whitelabel).
 
-## ✨ **Funcionalidades / Features**
-- ✅ **Troca de ícone / Icon Change**: O usuário pode escolher um ícone personalizado. / The user can select a custom icon.
-- ✅ **Troca de legenda (label do app apenas Android) / App Label Change** junto com o ícone. / along with the icon.
-- ✅ **Persistência da seleção / Selection Persistence**: O ícone escolhido é salvo e aplicado na próxima abertura do app. / The selected icon is saved and applied on the next app launch.
-- ✅ **Compatibilidade Android & iOS / Android & iOS Compatibility**: Implementação para ambos os sistemas. / Implementation for both systems.
-- ✅ **Mudança de Splash Screen / Splash Screen Change** no iOS e Android baseada no ícone escolhido. / on iOS and Android based on the selected icon.
-- ✅ **Separado por Flavors/Schemas / Separated by Flavors/Schemas**: A funcionalidade pode ser habilitada apenas para um flavor/schema específico. / The functionality can be enabled only for a specific flavor/schema.
+This project implements **runtime app icon and splash screen switching** in Flutter, with no rebuild or new release required. The user selects an icon inside the app; the choice is persisted and applied on the next launch. Designed to work in **multi-flavor whitelabel apps**.
 
-## 📱 **Demonstração / Demonstration**
+---
+
+## ✨ Funcionalidades / Features
+
+| Feature | Android | iOS |
+|---|:---:|:---:|
+| Troca de ícone / Icon change | ✅ | ✅ |
+| Troca de label do app / App label change | ✅ | — |
+| Troca de splash screen / Splash screen change | ✅ | ✅ |
+| Persistência da seleção / Selection persistence | ✅ | ✅ |
+| Separação por flavor/schema / Flavor support | ✅ | ✅ |
+
+---
+
+## 📱 Demonstração / Demo
 
 | Selecionando um ícone / Selecting an icon | Reiniciando o app / Restarting the app | Novo ícone aplicado / New icon applied |
-|---|---|---|
+|:---:|:---:|:---:|
 | ![Escolha do ícone](assets/screenshots/select_icon.jpg) | ![Fechando o app](assets/screenshots/close_app.jpg) | ![Novo ícone ativo](assets/screenshots/new_icon.jpg) |
 
-| Vídeo / Video|
-|---|
-| ![Como funciona / How it works](assets/animacao.gif) |
+![Como funciona / How it works](assets/animacao.gif)
 
-## 🛠 **Configuração e Instalação / Setup and Installation**
+---
 
-### **1️⃣ Clonando o Repositório / Cloning the Repository**
-```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
+## ⚙️ Como funciona / How it works
+
+**Android** — A troca usa `activity-alias` no `AndroidManifest.xml`. Cada alias representa um ícone alternativo. O `PackageManager` habilita/desabilita os aliases em runtime; o app precisa ser reiniciado para a mudança aparecer no launcher.
+
+**iOS** — Suportado nativamente desde iOS 10.3 via `CFBundleAlternateIcons` no `Info.plist`. A troca acontece via API do sistema, sem reinício obrigatório.
+
+**EN** — On Android, icon switching relies on `activity-alias` entries toggled via `PackageManager`. On iOS, alternate icons are declared in `Info.plist` and switched through the native API, available since iOS 10.3.
+
+---
+
+## 📦 Dependências / Dependencies
+
+```yaml
+dependencies:
+  flutter_dynamic_icon_plus: ^1.3.0
 ```
 
-### **2️⃣ Instalando as Dependências / Installing Dependencies**
+---
+
+## 🛠 Instalação / Setup
+
 ```bash
+git clone https://github.com/macielalex/dynamic_app_icon.git
+cd dynamic_app_icon
 flutter pub get
 ```
 
 ---
 
-## ⚙️ **Configuração no Android / Android Setup**
-### **Ativar Aliases no Manifest / Enable Aliases in the Manifest**
-No arquivo `AndroidManifest.xml`, defina os aliases dos ícones alternativos:
+## ⚙️ Configuração Android / Android Setup
 
-In the `AndroidManifest.xml` file, define aliases for alternative icons:
+### Ativar aliases no `AndroidManifest.xml`
 
 ```xml
-<activity-alias android:name=".PremiumActivity"
+<activity-alias
+    android:name=".PremiumActivity"
     android:label="App Premium"
     android:enabled="false"
     android:exported="true"
@@ -57,28 +82,24 @@ In the `AndroidManifest.xml` file, define aliases for alternative icons:
 </activity-alias>
 ```
 
-### **Permissões Necessárias / Required Permissions**
-Adicione a seguinte permissão no `AndroidManifest.xml`:
+### Permissão necessária / Required permission
 
-Add the following permission to `AndroidManifest.xml`:
 ```xml
 <uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
 ```
 
-### **Configurar Flavors (Opcional) / Configure Flavors (Optional)**
-Se quiser ativar a mudança de ícones apenas para um flavor, configure o `build.gradle`:
+### Configurar flavors (opcional) / Configure flavors (optional)
 
-If you want to enable icon change only for a specific flavor, configure `build.gradle`:
-```gradle
+```groovy
 android {
-    flavorDimensions "default"
+    flavorDimensions "env"
     productFlavors {
-        default {
-            dimension "default"
-            applicationIdSuffix ".default"
+        base {
+            dimension "env"
+            applicationIdSuffix ".base"
         }
         premium {
-            dimension "default"
+            dimension "env"
             applicationIdSuffix ".premium"
         }
     }
@@ -87,12 +108,10 @@ android {
 
 ---
 
-## 🍏 **Configuração no iOS / iOS Setup**
+## 🍏 Configuração iOS / iOS Setup
 
-### **Ativar Suporte a Ícones Alternativos / Enable Support for Alternate Icons**
-No `Info.plist`, defina os ícones alternativos:
+### Declarar ícones alternativos no `Info.plist`
 
-In `Info.plist`, define the alternate icons:
 ```xml
 <key>CFBundleAlternateIcons</key>
 <dict>
@@ -115,31 +134,27 @@ In `Info.plist`, define the alternate icons:
 
 ---
 
-## 🚀 **Rodando o App / Running the App**
+## 🚀 Rodando o app / Running the app
 
-### **Android**
 ```bash
+# Android
 flutter run --flavor premium
-```
 
-### **iOS**
-```bash
+# iOS
 flutter run --flavor premium --target=lib/main_premium.dart
 ```
 
 ---
 
-## 📜 **Licença / License**
-Este projeto está sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+## 📜 Licença / License
 
-This project is licensed under the MIT license - see the [LICENSE](LICENSE) file for details.
+MIT — veja [LICENSE](LICENSE) para detalhes / see [LICENSE](LICENSE) for details.
 
 ---
 
-## 📬 **Contato / Contact**
-Dúvidas ou sugestões? Entre em contato!
+## 📬 Contato / Contact
 
-Questions or suggestions? Get in touch!
-📧 Email: [alexmaciel.mail@gmail.com](mailto:alexmaciel.mail@gmail.com)  
-💼 LinkedIn: [Alex Maceil](https://www.linkedin.com/in/alex-maciel-867b8933/)
+Dúvidas ou sugestões? Entre em contato! / Questions or suggestions? Get in touch!
 
+📧 [alexmaciel.mail@gmail.com](mailto:alexmaciel.mail@gmail.com)  
+💼 [linkedin.com/in/alex-maciel-867b8933](https://www.linkedin.com/in/alex-maciel-867b8933/)
